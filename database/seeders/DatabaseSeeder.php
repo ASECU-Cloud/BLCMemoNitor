@@ -16,8 +16,9 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'BLC Super Admin',
+            'email' => 'blcmemonitor@diskominfo.gov',
+            'password' => bcrypt("BLCMemonitor2026!")
         ]);
     }
 }
