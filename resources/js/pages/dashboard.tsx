@@ -22,12 +22,11 @@ ChartJS.register(
     Legend,
 );
 
+ChartJS.defaults.color = window.matchMedia('(prefers-color-scheme: dark)')
+    .matches
+    ? '#fff'
+    : '#333';
 export default function Dashboard() {
-    // const isDarkTheme = window.matchMedia(
-    //     '(prefers-color-scheme: dark)',
-    // ).matches;
-    // console.log(isDarkTheme);
-
     const [isDarkTheme, setIsDarkTheme] = useState(
         window.matchMedia('(prefers-color-scheme: dark)').matches,
     );
@@ -42,11 +41,10 @@ export default function Dashboard() {
         media.addEventListener('change', listener);
 
         return () => media.removeEventListener('change', listener);
-    }, []);
+    }, [isDarkTheme]);
 
     useEffect(() => {
-        console.log('Dark theme is', isDarkTheme ? 'enabled' : 'disabled');
-        ChartJS.defaults.color = isDarkTheme ? '#fff' : '#666';
+        ChartJS.defaults.color = isDarkTheme ? '#fff' : '#333';
     }, [isDarkTheme]);
 
     const options = {
