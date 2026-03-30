@@ -26,6 +26,38 @@ ChartJS.defaults.color = window.matchMedia('(prefers-color-scheme: dark)')
     .matches
     ? '#fff'
     : '#333';
+
+interface datasets {
+    label: string;
+    data: number[];
+    backgroundColor: string;
+    borderRadius: number;
+    color: string;
+}
+
+function generateBarData(
+    title: string,
+    labels: string[],
+    datasets: datasets[],
+) {
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top' as const,
+            },
+            title: {
+                display: true,
+                text: title,
+            },
+        },
+    };
+
+    return (
+        <Bar options={options} data={{ labels: labels, datasets: datasets }} />
+    );
+}
+
 export default function Dashboard() {
     const [isDarkTheme, setIsDarkTheme] = useState(
         window.matchMedia('(prefers-color-scheme: dark)').matches,
@@ -47,45 +79,30 @@ export default function Dashboard() {
         ChartJS.defaults.color = isDarkTheme ? '#fff' : '#333';
     }, [isDarkTheme]);
 
-    const options = {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top' as const,
-            },
-            title: {
-                display: true,
-                text: 'Top 3 BLC Activities',
-            },
-        },
-    };
     const labels = ['March'];
-    const data = {
-        labels,
-        datasets: [
-            {
-                label: 'Grudo',
-                data: [481],
-                backgroundColor: 'rgba(255, 99, 15, 1)',
-                borderRadius: 5,
-                color: '#666',
-            },
-            {
-                label: 'Gubeng',
-                data: [789],
-                backgroundColor: 'rgba(255, 99, 132, 1)',
-                borderRadius: 5,
-                color: '#666',
-            },
-            {
-                label: 'Example',
-                data: [55],
-                backgroundColor: 'rgba(255, 200, 132, 1)',
-                borderRadius: 5,
-                color: '#666',
-            },
-        ],
-    };
+    const datasets = [
+        {
+            label: 'Grudo',
+            data: [481],
+            backgroundColor: 'rgba(255, 99, 15, 1)',
+            borderRadius: 5,
+            color: '#666',
+        },
+        {
+            label: 'Gubeng',
+            data: [789],
+            backgroundColor: 'rgba(255, 99, 132, 1)',
+            borderRadius: 5,
+            color: '#666',
+        },
+        {
+            label: 'Example',
+            data: [55],
+            backgroundColor: 'rgba(255, 200, 132, 1)',
+            borderRadius: 5,
+            color: '#666',
+        },
+    ];
 
     return (
         <>
@@ -93,23 +110,28 @@ export default function Dashboard() {
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                     <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 p-2 dark:border-sidebar-border dark:bg-neutral-800 dark:text-white">
-                        {/* <div>top 3 overall</div> */}
-
-                        <Bar
-                            key={isDarkTheme ? 'dark' : 'light'}
-                            options={options}
-                            data={data}
-                        />
-
-                        {/* <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" /> */}
+                        {/* top 3 overall */}
+                        {generateBarData(
+                            'Top 3 BLC Activities',
+                            labels,
+                            datasets,
+                        )}
                     </div>
                     <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border dark:bg-neutral-800">
-                        highest and lowest
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+                        {/* highest and lowest */}
+                        {generateBarData(
+                            'Highest and Lowest',
+                            labels,
+                            datasets,
+                        )}
                     </div>
                     <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border dark:bg-neutral-800">
-                        today total activities
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+                        {/* today total activities */}
+                        {generateBarData(
+                            'Today Total Activities',
+                            labels,
+                            datasets,
+                        )}
                     </div>
                 </div>
                 <div className="relative min-h-screen flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border dark:bg-neutral-800">
